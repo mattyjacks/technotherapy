@@ -3,73 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>TechnoTherapy - Your AI Therapeutic Companion</title>
+    <title>TechnoTherapy - Login</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
 </head>
-<body class="bg-gray-100 min-h-screen text-base">
-    <div class="container mx-auto px-4 py-4 md:py-8 max-w-4xl">
-        <header class="text-center mb-6 md:mb-12">
-            <h1 class="text-3xl md:text-4xl font-bold text-indigo-600 mb-2">TechnoTherapy</h1>
-            <p class="text-gray-600 text-sm md:text-base">Your AI-Powered Therapeutic Companion</p>
-        </header>
-
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-8">
-            <!-- Chat Section -->
-            <div class="bg-white rounded-lg shadow-lg p-4 md:p-6">
-                <h2 class="text-xl md:text-2xl font-semibold mb-4">Therapeutic Chat</h2>
-                <div id="chat-messages" class="h-64 md:h-96 overflow-y-auto mb-4 p-4 bg-gray-50 rounded"></div>
-                <div class="flex gap-2">
-                    <input type="text" id="chat-input" 
-                           class="flex-1 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-400 text-base"
-                           placeholder="Share your thoughts..."
-                           autocomplete="off">
-                    <button onclick="sendMessage()" 
-                            class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 text-sm md:text-base">
-                        Send
-                    </button>
-                </div>
-            </div>
-
-            <!-- Journal Section -->
-            <div class="bg-white rounded-lg shadow-lg p-4 md:p-6">
-                <h2 class="text-xl md:text-2xl font-semibold mb-4">Reflective Journal</h2>
-                <textarea id="journal-entry" 
-                          class="w-full h-32 md:h-40 p-4 mb-4 border rounded resize-none focus:outline-none focus:ring-2 focus:ring-indigo-400 text-base"
-                          placeholder="Write your thoughts and feelings..."></textarea>
-                <div class="flex flex-col md:flex-row justify-between items-center gap-2">
-                    <select id="mood-select" 
-                            class="w-full md:w-auto p-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-400 text-base">
-                        <option value="">Select Mood</option>
-                        <option value="happy">Happy</option>
-                        <option value="calm">Calm</option>
-                        <option value="anxious">Anxious</option>
-                        <option value="sad">Sad</option>
-                        <option value="frustrated">Frustrated</option>
-                    </select>
-                    <button onclick="saveJournalEntry()" 
-                            class="w-full md:w-auto bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 text-sm md:text-base">
-                        Save Entry
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Meditation Section -->
-        <div class="mt-4 md:mt-8 bg-white rounded-lg shadow-lg p-4 md:p-6">
-            <h2 class="text-xl md:text-2xl font-semibold mb-4">Guided Meditation</h2>
-            <div id="meditation-content" class="text-center p-4 bg-gray-50 rounded mb-4 text-base">
-                Click "Start Meditation" to begin a guided session
-            </div>
-            <div class="flex justify-center gap-4">
-                <button onclick="getMeditationPrompt()" 
-                        class="bg-purple-600 text-white px-6 py-2 rounded hover:bg-purple-700 text-sm md:text-base">
-                    Start Meditation
-                </button>
-            </div>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+    <div class="bg-white rounded-lg shadow-lg p-8 max-w-md w-full fade-in">
+        <h1 class="text-3xl font-bold text-indigo-600 mb-6 text-center">TechnoTherapy</h1>
+        <p class="text-gray-600 mb-8 text-center">Enter password to continue</p>
+        
+        <div class="space-y-4">
+            <input type="password" 
+                   id="password" 
+                   class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                   placeholder="Enter password"
+                   onkeypress="if(event.key === 'Enter') checkPassword()">
+            
+            <button onclick="checkPassword()"
+                    class="w-full bg-indigo-600 text-white py-3 rounded-lg hover:bg-indigo-700 transition-colors">
+                Enter
+            </button>
+            
+            <p id="error-message" class="text-red-500 text-center hidden">
+                Incorrect password. Please try again.
+            </p>
         </div>
     </div>
 
-    <script src="app.js"></script>
+    <script>
+        function checkPassword() {
+            const password = document.getElementById('password').value;
+            const errorMsg = document.getElementById('error-message');
+            
+            if (password === 'Matt') {
+                // Store authentication in sessionStorage
+                sessionStorage.setItem('authenticated', 'true');
+                // Redirect to main app
+                window.location.href = 'app.html';
+            } else {
+                errorMsg.classList.remove('hidden');
+                document.getElementById('password').value = '';
+            }
+        }
+
+        // Check if already authenticated
+        window.onload = function() {
+            if (sessionStorage.getItem('authenticated') === 'true') {
+                window.location.href = 'app.html';
+            }
+        }
+    </script>
 </body>
 </html>

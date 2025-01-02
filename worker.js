@@ -1,29 +1,14 @@
 // TechnoTherapy Cloudflare Worker
 
-const API_KEY = "Matt";  // Authentication password
-const CORS_HEADERS = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "GET,POST,OPTIONS",
-  "Access-Control-Allow-Headers": "Content-Type,X-API-Key",
-};
-
 export default {
   async fetch(request, env) {
-    // Handle CORS preflight requests
+    // Handle CORS
     if (request.method === "OPTIONS") {
       return new Response(null, {
-        headers: CORS_HEADERS,
-      });
-    }
-
-    // Verify API key
-    const apiKey = request.headers.get("X-API-Key");
-    if (apiKey !== API_KEY) {
-      return new Response(JSON.stringify({ error: "Unauthorized" }), {
-        status: 401,
         headers: {
-          "Content-Type": "application/json",
-          ...CORS_HEADERS,
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET,POST,OPTIONS",
+          "Access-Control-Allow-Headers": "Content-Type",
         },
       });
     }
@@ -51,8 +36,6 @@ export default {
               },
               { role: "user", content: message }
             ],
-            temperature: 0.7,
-            max_tokens: 300,
           }),
         });
 
@@ -62,7 +45,7 @@ export default {
         }), {
           headers: {
             "Content-Type": "application/json",
-            ...CORS_HEADERS,
+            "Access-Control-Allow-Origin": "*",
           },
         });
       }
@@ -86,8 +69,6 @@ export default {
               },
               { role: "user", content }
             ],
-            temperature: 0.7,
-            max_tokens: 150,
           }),
         });
 
@@ -98,7 +79,7 @@ export default {
         }), {
           headers: {
             "Content-Type": "application/json",
-            ...CORS_HEADERS,
+            "Access-Control-Allow-Origin": "*",
           },
         });
       }
@@ -120,8 +101,6 @@ export default {
               },
               { role: "user", content: "Generate a short meditation prompt" }
             ],
-            temperature: 0.7,
-            max_tokens: 200,
           }),
         });
 
@@ -131,25 +110,20 @@ export default {
         }), {
           headers: {
             "Content-Type": "application/json",
-            ...CORS_HEADERS,
+            "Access-Control-Allow-Origin": "*",
           },
         });
       }
 
-      return new Response(JSON.stringify({ error: "Not Found" }), {
-        status: 404,
-        headers: {
-          "Content-Type": "application/json",
-          ...CORS_HEADERS,
-        },
-      });
+      // Return 404 for any other paths
+      return new Response("Not Found", { status: 404 });
 
     } catch (error) {
       return new Response(JSON.stringify({ error: error.message }), {
         status: 500,
         headers: {
           "Content-Type": "application/json",
-          ...CORS_HEADERS,
+          "Access-Control-Allow-Origin": "*",
         },
       });
     }

@@ -1,13 +1,10 @@
 // Main application JavaScript
 
-const API_URL = 'https://YOUR_WORKER_SUBDOMAIN.workers.dev';  // Replace with your worker URL
-
-const API_KEY = "Matt";  // Your password
+const API_URL = 'https://technotherapy.matthewwarrenjackson.workers.dev/';  // Replace with your worker URL
 
 // Headers for all API requests
 const headers = {
-    'Content-Type': 'application/json',
-    'X-API-Key': API_KEY
+    'Content-Type': 'application/json'
 };
 
 // Chat functionality
@@ -26,10 +23,7 @@ async function sendMessage() {
         const response = await fetch(`${API_URL}/api/chat`, {
             method: 'POST',
             headers: headers,
-            body: JSON.stringify({
-                message: message,
-                mood: document.getElementById('mood-select').value
-            })
+            body: JSON.stringify({ message })
         });
 
         if (!response.ok) {
@@ -96,6 +90,7 @@ async function getMeditationPrompt() {
 
     try {
         const response = await fetch(`${API_URL}/api/meditation`, {
+            method: 'GET',
             headers: headers
         });
 
@@ -120,6 +115,9 @@ chatInput.addEventListener('keypress', (e) => {
         sendMessage();
     }
 });
+
+document.getElementById('save-journal-entry').addEventListener('click', saveJournalEntry);
+document.getElementById('get-meditation-prompt').addEventListener('click', getMeditationPrompt);
 
 // Initial setup
 document.addEventListener('DOMContentLoaded', () => {
