@@ -1,6 +1,6 @@
 // Main application JavaScript
 
-const API_URL = 'https://technotherapy.matthewwarrenjackson.workers.dev/';  // Replace with your worker URL
+const API_URL = 'https://technotherapy.matthewwarrenjackson.workers.dev';  // Replace with your worker URL
 
 // Headers for all API requests
 const headers = {
@@ -110,16 +110,30 @@ async function getMeditationPrompt() {
 }
 
 // Event listeners
-chatInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-        sendMessage();
-    }
-});
-
-document.getElementById('save-journal-entry').addEventListener('click', saveJournalEntry);
-document.getElementById('get-meditation-prompt').addEventListener('click', getMeditationPrompt);
-
-// Initial setup
 document.addEventListener('DOMContentLoaded', () => {
-    appendMessage('Hello! I\'m your AI therapeutic companion. How are you feeling today?', 'ai');
+    // Initialize chat
+    const chatMessages = document.getElementById('chat-messages');
+    if (chatMessages) {
+        appendMessage('Hello! I\'m your AI therapeutic companion. How are you feeling today?', 'ai');
+    }
+
+    // Add event listeners only if elements exist
+    const chatInput = document.getElementById('chat-input');
+    if (chatInput) {
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    }
+
+    const saveJournalEntryButton = document.getElementById('save-journal-entry');
+    if (saveJournalEntryButton) {
+        saveJournalEntryButton.addEventListener('click', saveJournalEntry);
+    }
+
+    const getMeditationPromptButton = document.getElementById('get-meditation-prompt');
+    if (getMeditationPromptButton) {
+        getMeditationPromptButton.addEventListener('click', getMeditationPrompt);
+    }
 });

@@ -1,15 +1,17 @@
 // TechnoTherapy Cloudflare Worker
 
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "https://technotherapy.pages.dev",
+  "Access-Control-Allow-Methods": "GET,POST,OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type",
+};
+
 export default {
   async fetch(request, env) {
-    // Handle CORS
+    // Handle CORS preflight requests
     if (request.method === "OPTIONS") {
       return new Response(null, {
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "GET,POST,OPTIONS",
-          "Access-Control-Allow-Headers": "Content-Type",
-        },
+        headers: corsHeaders
       });
     }
 
@@ -45,7 +47,7 @@ export default {
         }), {
           headers: {
             "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
+            ...corsHeaders,
           },
         });
       }
@@ -79,7 +81,7 @@ export default {
         }), {
           headers: {
             "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
+            ...corsHeaders,
           },
         });
       }
@@ -110,20 +112,23 @@ export default {
         }), {
           headers: {
             "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
+            ...corsHeaders,
           },
         });
       }
 
       // Return 404 for any other paths
-      return new Response("Not Found", { status: 404 });
+      return new Response("Not Found", { 
+        status: 404,
+        headers: corsHeaders
+      });
 
     } catch (error) {
       return new Response(JSON.stringify({ error: error.message }), {
         status: 500,
         headers: {
           "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
+          ...corsHeaders,
         },
       });
     }
