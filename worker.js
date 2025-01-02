@@ -67,10 +67,19 @@ export default {
             messages: [
               {
                 role: "system",
-                content: "Analyze the emotional tone and key themes of this journal entry. Provide a brief, supportive response."
+                content: `You are an empathetic AI therapist analyzing a journal entry. 
+                The user's current mood is: ${mood || 'not specified'}. 
+                Provide a thoughtful, supportive response that:
+                1. Acknowledges their current emotional state
+                2. Identifies key themes or patterns
+                3. Offers gentle validation and support
+                4. If appropriate, suggests a simple coping strategy
+                Keep your response concise but meaningful, even for short entries.`
               },
               { role: "user", content }
             ],
+            temperature: 0.7,
+            max_tokens: 150,
           }),
         });
 
@@ -99,10 +108,12 @@ export default {
             messages: [
               {
                 role: "system",
-                content: "Generate a calming, mindful meditation prompt for relaxation and mental well-being."
+                content: "Generate a very brief, calming meditation prompt. Focus on immediate, present-moment awareness. Use simple, soothing language. Keep it under 50 words."
               },
-              { role: "user", content: "Generate a short meditation prompt" }
+              { role: "user", content: "Generate a short, peaceful meditation prompt for the present moment." }
             ],
+            temperature: 0.7,
+            max_tokens: 50,
           }),
         });
 
